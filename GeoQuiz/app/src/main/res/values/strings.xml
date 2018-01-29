@@ -1,8 +1,13 @@
 <resources>
+    <string name="question_oceans">The Pacific ocean is Larger than the Atlantic Ocean.</string>
+    <string name="question_mideast">The Suez Canal connects the Red Sea and the Indian Ocean.</string>
+    <string name="question_africa">The source of the Nile is in Egypt.</string>
+    <string name="question_americas">The Amazon is the longest river in the Americas.</string>
+    <string name="question_asia">Lake Baikal is the world\'s oldest and deepest freshwater lake.</string>
+
     <string name="app_name">GeoQuiz</string>
-    <string name="question_text">
-        Constantinople is the largest city in Turkey
-    </string>
+    <string name="next_button">Next</string>
+    <string name="prev_button">Prev</string>
     <string name="true_button">True</string>
     <string name="false_button">False</string>
     <string name="correct_toast">Correct!</string>

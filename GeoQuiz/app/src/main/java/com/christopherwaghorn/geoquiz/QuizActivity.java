@@ -14,6 +14,7 @@ public class QuizActivity extends AppCompatActivity {
     private Button mTrueButton;
     private Button mFalseButton;
     private Button mNextButton;
+    private Button mPrevButton;
     private TextView mQuestionTextView;
     private int mCurrentIndex = 0;
 
@@ -54,6 +55,16 @@ public class QuizActivity extends AppCompatActivity {
             public void onClick(View view) {
                 mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
                 updateQuestion();
+            }
+        });
+
+        mPrevButton = findViewById(R.id.prev_button);
+        mPrevButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mCurrentIndex = mCurrentIndex > 0 ? mCurrentIndex - 1 : mQuestionBank.length;
+                int question = mQuestionBank[mCurrentIndex].getTextResId();
+                mQuestionTextView.setText(question);
             }
         });
 

@@ -16,6 +16,7 @@ public class QuizActivity extends AppCompatActivity {
 
     private static final String TAG = "QuizActivity";
     private static final String KEY_INDEX = "index";
+    private static final String KEY_SHOWN = "shown";
     private static final int REQUEST_CODE_CHEAT = 0;
 
     private Button mTrueButton;
@@ -75,7 +76,6 @@ public class QuizActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
-                mIsCheater = false;
                 updateQuestion();
             }
         });
@@ -85,13 +85,13 @@ public class QuizActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 mCurrentIndex = mCurrentIndex > 0 ? mCurrentIndex - 1 : mQuestionBank.length - 1;
-                mIsCheater = false;
                 updateQuestion();
             }
         });
 
         if (savedInstanceState != null) {
             mCurrentIndex = savedInstanceState.getInt(KEY_INDEX,0);
+            mIsCheater = savedInstanceState.getBoolean(KEY_SHOWN, false);
         }
 
         updateQuestion();
@@ -100,7 +100,7 @@ public class QuizActivity extends AppCompatActivity {
     private void checkAnswer(boolean userPassedTrue) {
         boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
 
-        int messageRedId = 0;
+        int messageRedId;
         if (mIsCheater) {
             messageRedId = R.string.judgement_toast;
         } else {
@@ -110,6 +110,8 @@ public class QuizActivity extends AppCompatActivity {
                 messageRedId = R.string.incorrect_toast;
             }
         }
+
+        mIsCheater = false;
 
         Toast.makeText(this, messageRedId, Toast.LENGTH_SHORT).show();
     }
@@ -124,6 +126,7 @@ public class QuizActivity extends AppCompatActivity {
         super.onSaveInstanceState(savedInstanceState);
         Log.d(TAG, "onSavedInstanceState() called");
         savedInstanceState.putInt(KEY_INDEX, mCurrentIndex);
+        savedInstanceState.putBoolean(KEY_SHOWN, mIsCheater);
     }
 
     @Override
@@ -141,14 +144,16 @@ public class QuizActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != Activity.RESULT_OK) {
-            return;;
+            return;
         }
 
         if (requestCode == REQUEST_CODE_CHEAT) {
             if (data == null) {
+                Log.d(TAG, "Have no data");
                 return;
             }
             mIsCheater = CheatActivity.wasAnswerShown(data);
+            Log.d(TAG, "mIsCheater = " + mIsCheater);
         }
     }
 }
